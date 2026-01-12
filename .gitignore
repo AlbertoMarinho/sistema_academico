@@ -1,0 +1,17 @@
+# Ignorar ambiente virtual
+venv/
+env/
+.env
+
+# Ignorar arquivos compilados do Python (cache)
+__pycache__/
+*.pyc
+
+# Ignorar Banco de Dados (NUNCA suba o banco real para o git)
+*.db
+*.sqlite3
+backend/database/sistema_academico.db
+
+# Ignorar arquivos do sistema operacional
+.DS_Store
+Thumbs.db
