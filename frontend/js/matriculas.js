@@ -128,24 +128,39 @@ async function salvarMatricula(event) {
 }
 
 async function cancelarMatricula(id, aluno) {
-    if (!confirm(`Cancelar matrícula de ${aluno}?`)) return;
-    
+    // Usando SweetAlert2 em vez do confirm nativo
+    const result = await Swal.fire({
+        title: 'Cancelar Matrícula?',
+        text: `Deseja cancelar a matrícula de ${aluno}?`,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33', // Vermelho para ação destrutiva
+        cancelButtonColor: '#3085d6', // Azul para cancelar
+        confirmButtonText: 'Sim, cancelar!',
+        cancelButtonText: 'Voltar'
+    });
+
+    // Se o usuário clicar em "Voltar", paramos por aqui
+    if (!result.isConfirmed) return;
+
     try {
         const response = await fetch(`${API_BASE_URL}/matriculas/${id}`, {
             method: 'DELETE'
         });
         const result = await response.json();
-        
+
         if (result.error) {
-            showAlert(result.error, 'error');
+            Swal.fire('Erro!', result.error, 'error');
             return;
         }
-        
-        showAlert('Matrícula cancelada!');
+
+        // Sucesso!
+        Swal.fire('Cancelada!', 'A matrícula foi removida com sucesso.', 'success');
         carregarMatriculas();
+        
     } catch (error) {
         console.error('Erro:', error);
-        showAlert('Erro ao cancelar matrícula', 'error');
+        Swal.fire('Erro!', 'Erro ao tentar cancelar a matrícula.', 'error');
     }
 }
 

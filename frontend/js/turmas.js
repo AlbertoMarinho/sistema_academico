@@ -173,25 +173,34 @@ async function editarTurma(id) {
     }
 }
 
-async function excluirTurma(id, codigo) {
-    if (!confirm(`Excluir turma ${codigo}?`)) return;
-    
+async function excluirTurma(id) {
+    const result = await Swal.fire({
+        title: 'Excluir Turma?',
+        text: "Essa ação não pode ser desfeita!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Sim, excluir!',
+        cancelButtonText: 'Cancelar'
+    });
+
+    if (!result.isConfirmed) return;
+
     try {
-        const response = await fetch(`${API_BASE_URL}/turmas/${id}`, {
-            method: 'DELETE'
-        });
+        const response = await fetch(`${API_BASE_URL}/turmas/${id}`, { method: 'DELETE' });
         const result = await response.json();
-        
+
         if (result.error) {
-            showAlert(result.error, 'error');
+            Swal.fire('Erro!', result.error, 'error');
             return;
         }
-        
-        showAlert('Turma excluída!');
+
+        Swal.fire('Pronto!', 'Turma excluída.', 'success');
         carregarTurmas();
     } catch (error) {
         console.error('Erro:', error);
-        showAlert('Erro ao excluir turma', 'error');
+        Swal.fire('Erro!', 'Erro ao excluir.', 'error');
     }
 }
 

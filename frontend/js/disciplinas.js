@@ -150,24 +150,33 @@ async function editarDisciplina(id) {
 }
 
 async function excluirDisciplina(id, nome) {
-    if (!confirm(`Excluir disciplina ${nome}?`)) return;
-    
+    const result = await Swal.fire({
+        title: 'Tem certeza?',
+        text: `Excluir a disciplina ${nome}?`,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Sim, excluir!',
+        cancelButtonText: 'Cancelar'
+    });
+
+    if (!result.isConfirmed) return;
+
     try {
-        const response = await fetch(`${API_BASE_URL}/disciplinas/${id}`, {
-            method: 'DELETE'
-        });
+        const response = await fetch(`${API_BASE_URL}/disciplinas/${id}`, { method: 'DELETE' });
         const result = await response.json();
-        
+
         if (result.error) {
-            showAlert(result.error, 'error');
+            Swal.fire('Erro!', result.error, 'error');
             return;
         }
-        
-        showAlert('Disciplina excluída!');
+
+        Swal.fire('Sucesso!', 'Disciplina excluída.', 'success');
         carregarDisciplinas();
     } catch (error) {
         console.error('Erro:', error);
-        showAlert('Erro ao excluir disciplina', 'error');
+        Swal.fire('Erro!', 'Erro ao excluir.', 'error');
     }
 }
 

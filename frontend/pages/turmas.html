@@ -1,8 +1,8 @@
 <div class="container">
     <h2>Gerenciamento de Turmas</h2>
-    
+
     <button class="btn-primary" onclick="openModal('modalTurma')">+ Nova Turma</button>
-    
+
     <div id="listaTurmas">
         <div class="loading">Carregando turmas</div>
     </div>
@@ -14,46 +14,46 @@
         <h3 id="modalTitle">Nova Turma</h3>
         <form id="formTurma" onsubmit="salvarTurma(event)">
             <input type="hidden" id="turmaId">
-            
+
             <div class="form-group">
                 <label>Código da Turma *</label>
                 <input type="text" id="codigo" required placeholder="Ex: PROG101-2024-1">
             </div>
-            
+
             <div class="form-group">
                 <label>Disciplina *</label>
                 <select id="disciplina_id" required>
                     <option value="">Selecione uma disciplina</option>
                 </select>
             </div>
-            
+
             <div class="form-group">
                 <label>Professor *</label>
                 <select id="professor_id" required>
                     <option value="">Selecione um professor</option>
                 </select>
             </div>
-            
+
             <div class="form-row">
                 <div class="form-group">
                     <label>Período *</label>
                     <input type="text" id="periodo" required placeholder="Ex: 2024.1">
                 </div>
-                
+
                 <div class="form-group">
                     <label>Ano *</label>
                     <input type="number" id="ano" required min="2000" max="2100">
                 </div>
             </div>
-            
+
             <div class="form-group">
                 <label>Vagas *</label>
                 <input type="number" id="vagas" required min="1" value="30">
             </div>
-            
-            <div class="form-actions">
-                <button type="submit" class="btn-success">Salvar</button>
-                <button type="button" class="btn-secondary" onclick="closeModal('modalTurma')">Cancelar</button>
+
+            <div class="modal-footer">
+                <button type="button" class="btn-cancel" onclick="closeModal('modalTurma')">Cancelar</button>
+                <button type="submit" class="btn-save">Salvar</button>
             </div>
         </form>
     </div>

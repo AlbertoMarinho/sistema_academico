@@ -126,24 +126,33 @@ async function editarCurso(id) {
 }
 
 async function excluirCurso(id, nome) {
-    if (!confirm(`Excluir curso ${nome}?`)) return;
-    
+    const result = await Swal.fire({
+        title: 'Tem certeza?',
+        text: `Deseja excluir o curso de ${nome}?`,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Sim, excluir!',
+        cancelButtonText: 'Cancelar'
+    });
+
+    if (!result.isConfirmed) return;
+
     try {
-        const response = await fetch(`${API_BASE_URL}/cursos/${id}`, {
-            method: 'DELETE'
-        });
+        const response = await fetch(`${API_BASE_URL}/cursos/${id}`, { method: 'DELETE' });
         const result = await response.json();
-        
+
         if (result.error) {
-            showAlert(result.error, 'error');
+            Swal.fire('Erro!', result.error, 'error');
             return;
         }
-        
-        showAlert('Curso excluído!');
+
+        Swal.fire('Excluído!', 'Curso removido.', 'success');
         carregarCursos();
     } catch (error) {
         console.error('Erro:', error);
-        showAlert('Erro ao excluir curso', 'error');
+        Swal.fire('Erro!', 'Erro de conexão.', 'error');
     }
 }
 

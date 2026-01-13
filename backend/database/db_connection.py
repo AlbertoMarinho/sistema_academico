@@ -88,7 +88,7 @@ def init_db():
             aluno_id INTEGER NOT NULL,
             turma_id INTEGER NOT NULL,
             data_matricula TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-            status TEXT DEFAULT 'ativa',
+            status TEXT DEFAULT 'Ativa',
             FOREIGN KEY (aluno_id) REFERENCES alunos(id) ON DELETE CASCADE,
             FOREIGN KEY (turma_id) REFERENCES turmas(id) ON DELETE CASCADE,
             UNIQUE(aluno_id, turma_id)

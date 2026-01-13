@@ -130,28 +130,43 @@ async function editarProfessor(id) {
 }
 
 async function excluirProfessor(id, nome) {
-    if (!confirm(`Excluir professor ${nome}?`)) return;
-    
+    const result = await Swal.fire({
+        title: 'Tem certeza?',
+        text: `Deseja excluir o professor ${nome}?`,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Sim, excluir!',
+        cancelButtonText: 'Cancelar'
+    });
+
+    if (!result.isConfirmed) return;
+
     try {
         const response = await fetch(`${API_BASE_URL}/professores/${id}`, {
             method: 'DELETE'
         });
         const result = await response.json();
-        
+
         if (result.error) {
-            showAlert(result.error, 'error');
+            Swal.fire('Erro!', result.error, 'error');
             return;
         }
-        
-        showAlert('Professor excluído!');
+
+        Swal.fire('Excluído!', 'Professor removido com sucesso.', 'success');
         carregarProfessores();
     } catch (error) {
         console.error('Erro:', error);
-        showAlert('Erro ao excluir professor', 'error');
+        Swal.fire('Erro!', 'Falha ao conectar com o servidor.', 'error');
     }
 }
 
+// Configurar botão e máscaras
 setTimeout(() => {
+    // Aplica a máscara de telefone (definida no app.js)
+    aplicarMascaras();
+
     const btnNovo = document.querySelector('.btn-primary');
     if (btnNovo) {
         const newBtn = btnNovo.cloneNode(true);
@@ -160,6 +175,7 @@ setTimeout(() => {
             document.getElementById('formProfessor').reset();
             document.getElementById('professorId').value = '';
             document.getElementById('modalTitle').textContent = 'Novo Professor';
+            openModal('modalProfessor');
         });
     }
 }, 200);
