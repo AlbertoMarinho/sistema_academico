@@ -144,9 +144,19 @@ async function editarAluno(id) {
 }
 
 async function excluirAluno(id, nome) {
-    if (!confirm(`Tem certeza que deseja excluir o aluno ${nome}?`)) {
-        return;
-    }
+    // Substituindo o confirm() nativo pelo SweetAlert2
+    const result = await Swal.fire({
+        title: 'Tem certeza?',
+        text: `Você deseja excluir o aluno ${nome}? Essa ação não pode ser desfeita.`,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33', // Vermelho para perigo
+        cancelButtonColor: '#3085d6', // Azul para cancelar
+        confirmButtonText: 'Sim, excluir!',
+        cancelButtonText: 'Cancelar'
+    });
+
+    if (!result.isConfirmed) return; // Se cancelou, para aqui
     
     try {
         const response = await fetch(`${API_BASE_URL}/alunos/${id}`, {
@@ -156,23 +166,25 @@ async function excluirAluno(id, nome) {
         const result = await response.json();
         
         if (result.error) {
-            showAlert(result.error, 'error');
+            Swal.fire('Erro!', result.error, 'error'); // Alerta bonito de erro
             return;
         }
         
-        showAlert('Aluno excluído com sucesso!');
+        Swal.fire('Excluído!', 'O aluno foi removido com sucesso.', 'success'); // Sucesso
         carregarAlunos();
     } catch (error) {
         console.error('❌ Erro ao excluir aluno:', error);
-        showAlert('Erro ao excluir aluno', 'error');
+        Swal.fire('Erro!', 'Falha ao conectar com o servidor.', 'error');
     }
 }
 
-// Configurar botão "Novo Aluno" - SEM usar const/let para evitar redeclaração
+// Configurar botão "Novo Aluno" e Máscaras
 setTimeout(() => {
+    // Aplica máscara nos campos de telefone assim que a página carrega
+    aplicarMascaras();
+
     const btnNovo = document.querySelector('.btn-primary');
     if (btnNovo) {
-        // Remove listeners antigos
         const newBtn = btnNovo.cloneNode(true);
         btnNovo.parentNode.replaceChild(newBtn, btnNovo);
         
@@ -180,8 +192,8 @@ setTimeout(() => {
             document.getElementById('formAluno').reset();
             document.getElementById('alunoId').value = '';
             document.getElementById('modalTitle').textContent = 'Novo Aluno';
+            openModal('modalAluno'); // Certifique-se de abrir o modal
         });
-        console.log('✅ Botão "Novo Aluno" configurado');
     }
 }, 200);
 

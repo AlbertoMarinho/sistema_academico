@@ -103,6 +103,35 @@ function closeModal(modalId) {
     }
 }
 
+function mascaraTelefone(input) {
+    let value = input.value.replace(/\D/g, ''); // Remove tudo que não é número
+    
+    if (value.length > 11) value = value.slice(0, 11); // Limita tamanho
+    
+    // Formato (XX) XXXXX-XXXX
+    if (value.length > 10) {
+        value = value.replace(/^(\d\d)(\d{5})(\d{4}).*/, '($1) $2-$3');
+    } 
+    // Formato (XX) XXXX-XXXX (fixo)
+    else if (value.length > 5) {
+        value = value.replace(/^(\d\d)(\d{4})(\d{0,4}).*/, '($1) $2-$3');
+    } 
+    // Formato (XX) ...
+    else if (value.length > 2) {
+        value = value.replace(/^(\d\d)(\d{0,5}).*/, '($1) $2');
+    }
+    
+    input.value = value;
+}
+
+// Helper para aplicar máscaras automaticamente em novos inputs
+function aplicarMascaras() {
+    const inputsTelefone = document.querySelectorAll('input[type="tel"], #telefone');
+    inputsTelefone.forEach(input => {
+        input.addEventListener('input', (e) => mascaraTelefone(e.target));
+    });
+}
+
 // Fechar modal ao clicar fora
 document.addEventListener('click', function(event) {
     if (event.target.classList.contains('modal')) {
