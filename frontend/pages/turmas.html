@@ -52,8 +52,8 @@
             </div>
 
             <div class="modal-footer">
-                <button type="button" class="btn-cancel" onclick="closeModal('modalTurma')">Cancelar</button>
                 <button type="submit" class="btn-save">Salvar</button>
+                <button type="button" class="btn-cancel" onclick="closeModal('modalTurma')">Cancelar</button>
             </div>
         </form>
     </div>
@@ -62,12 +62,11 @@
 <!-- Modal Ver Alunos da Turma -->
 <div id="modalAlunos" class="modal">
     <div class="modal-content">
-        <h3>Alunos da Turma</h3>
-        <div id="listaAlunosTurma">
-            <div class="loading">Carregando alunos</div>
-        </div>
-        <div class="form-actions">
-            <button type="button" class="btn-secondary" onclick="closeModal('modalAlunos')">Fechar</button>
+        <h3>Alunos Matriculados</h3>
+        <div id="listaAlunosTurma"></div>
+        
+        <div class="modal-footer">
+            <button class="btn-cancel" onclick="closeModal('modalAlunos')">Fechar</button>
         </div>
     </div>
 </div>

@@ -86,7 +86,7 @@ async function carregarTurmas() {
                     <td>${turma.ano}</td>
                     <td>${turma.vagas}</td>
                     <td>
-                        <button class="btn-view" onclick="verAlunos(${turma.id})">Alunos</button>
+                        <button class="btn-info" onclick="verAlunos(${turma.id})">Alunos</button>
                         <button class="btn-edit" onclick="editarTurma(${turma.id})">Editar</button>
                         <button class="btn-delete" onclick="excluirTurma(${turma.id}, '${turma.codigo.replace(/'/g, "\\'")}')">Excluir</button>
                     </td>
