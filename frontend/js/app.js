@@ -6,7 +6,7 @@ async function loadPage(page) {
     const content = document.getElementById('content');
     
     try {
-        const response = await fetch(`pages/${page}.html`);
+        const response = await fetch(`pages/${page}.html?t=${Date.now()}`);
         
         if (!response.ok) {
             throw new Error(`Erro HTTP: ${response.status}`);
