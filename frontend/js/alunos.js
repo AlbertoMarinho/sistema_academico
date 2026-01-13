@@ -1,9 +1,3 @@
-// Limpar event listeners anteriores
-const oldScript = document.querySelector('script[data-page="alunos"]');
-if (oldScript && oldScript !== document.currentScript) {
-    console.log('♻️ Limpando script antigo de alunos');
-}
-
 // Carregar alunos ao iniciar a página
 carregarAlunos();
 
